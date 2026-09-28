@@ -1,47 +1,93 @@
+'use client'
+
+import { useState } from 'react'
+
+const bands = [
+  { label: 'Delta', value: '18.4 µV²', width: '58%' },
+  { label: 'Theta', value: '12.1 µV²', width: '42%' },
+  { label: 'Alpha', value: '9.8 µV²', width: '34%' },
+  { label: 'Beta', value: '6.2 µV²', width: '23%' },
+]
+
 export default function Page() {
+  const [fileName, setFileName] = useState('')
+
   return (
-    <main
-      style={{
-        colorScheme: 'light dark',
-        position: 'relative',
-        display: 'flex',
-        minHeight: '100vh',
-        alignItems: 'center',
-        justifyContent: 'center',
-        backgroundColor: 'light-dark(#fff, #000)',
-        color: 'light-dark(#000, #fff)',
-      }}
-    >
-      <svg
-        aria-hidden="true"
-        style={{ width: 80, height: 80 }}
-        width={80}
-        height={80}
-        fill="none"
-        viewBox="0 0 20 20"
-        xmlns="http://www.w3.org/2000/svg"
-        stroke="currentColor"
-        strokeWidth="0.5"
-      >
-        <path
-          d="M14.2 14.2H17V6.9375C17 4.76288 15.2371 3 13.0625 3H5.8V5.8M14.2 14.2V7.79063L7.79062 14.2H14.2ZM14.2 14.2V17H6.9375C4.76288 17 3 15.2371 3 13.0625V5.8H5.8M5.8 5.8V12.2313L12.2313 5.8H5.8Z"
-          strokeLinejoin="round"
-        />
-      </svg>
-      <p
-        style={{
-          position: 'absolute',
-          left: '50%',
-          top: 'calc(50% + 56px)',
-          transform: 'translateX(-50%)',
-          whiteSpace: 'nowrap',
-          fontSize: '14px',
-          fontWeight: 500,
-          color: 'light-dark(#71717a, #a1a1aa)',
-        }}
-      >
-        Your v0 generation will show here.
-      </p>
+    <main className="app-shell">
+      <header className="topbar">
+        <a className="brand" href="#top" aria-label="NeuroMark home">
+          <span className="brand-mark" aria-hidden="true">N</span>
+          <span>NeuroMark</span>
+        </a>
+        <nav className="topnav" aria-label="Main navigation">
+          <a href="#analysis">Analysis</a>
+          <a href="#history">History</a>
+          <a href="#about">About</a>
+        </nav>
+        <button className="profile-button" type="button" aria-label="Open profile">DR</button>
+      </header>
+
+      <div className="content-wrap" id="top">
+        <section className="intro" id="analysis">
+          <div>
+            <p className="eyebrow">EEG ANALYSIS</p>
+            <h1>Understand the signal.</h1>
+            <p className="intro-copy">Upload an EEG recording to review signal quality and depression-related patterns.</p>
+          </div>
+          <div className="privacy-note"><span className="status-dot" /> Private workspace</div>
+        </section>
+
+        <section className="workspace-grid" aria-label="EEG analysis workspace">
+          <div className="panel upload-panel">
+            <div className="panel-heading">
+              <div>
+                <p className="section-label">01 / RECORDING</p>
+                <h2>Upload EEG file</h2>
+              </div>
+              <span className="file-type">EDF · BDF</span>
+            </div>
+            <label className="dropzone">
+              <input type="file" accept=".edf,.bdf" onChange={(event) => setFileName(event.target.files?.[0]?.name ?? '')} />
+              <span className="upload-icon" aria-hidden="true">↑</span>
+              <strong>{fileName || 'Choose a recording'}</strong>
+              <span>{fileName ? 'Ready for analysis' : 'or drag and drop it here'}</span>
+            </label>
+            <div className="upload-meta"><span>Max file size 500 MB</span><span>Data stays private</span></div>
+            <button className="primary-button" type="button">Start analysis <span aria-hidden="true">→</span></button>
+          </div>
+
+          <div className="panel overview-panel">
+            <div className="panel-heading">
+              <div>
+                <p className="section-label">02 / OVERVIEW</p>
+                <h2>Latest analysis</h2>
+              </div>
+              <span className="quiet-label">Sample result</span>
+            </div>
+            <div className="result-state"><span className="result-dot" /><span>Analysis complete</span><time>Today, 13:42</time></div>
+            <div className="score-row"><div><span className="metric-label">Pattern score</span><strong>0.68</strong></div><span className="score-caption">Moderate indication</span></div>
+            <div className="meter"><span /></div>
+            <p className="disclaimer">This score is a research signal, not a medical diagnosis.</p>
+            <a className="text-link" href="#details">View detailed report <span aria-hidden="true">→</span></a>
+          </div>
+        </section>
+
+        <section className="lower-grid" id="history">
+          <div className="panel signal-panel">
+            <div className="panel-heading"><div><p className="section-label">SIGNAL PROFILE</p><h2>Frequency bands</h2></div><span className="quiet-label">Relative power</span></div>
+            <div className="band-list">{bands.map((band) => <div className="band-row" key={band.label}><span>{band.label}</span><div className="band-track"><span style={{ width: band.width }} /></div><strong>{band.value}</strong></div>)}</div>
+          </div>
+          <aside className="panel history-panel">
+            <p className="section-label">RECENT FILES</p>
+            <h2>Analysis history</h2>
+            <div className="history-item"><span className="file-icon">EDF</span><div><strong>session_04.edf</strong><small>Today · Complete</small></div><span className="history-score">0.68</span></div>
+            <div className="history-item"><span className="file-icon">EDF</span><div><strong>baseline.edf</strong><small>Sep 24 · Complete</small></div><span className="history-score">0.41</span></div>
+            <a className="text-link" href="#all-history">See all history <span aria-hidden="true">→</span></a>
+          </aside>
+        </section>
+
+        <footer id="about"><span>NeuroMark · Research workspace</span><span>For research use only</span></footer>
+      </div>
     </main>
   )
 }
