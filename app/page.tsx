@@ -20,7 +20,7 @@ export default function Home() {
       <nav><a href="#how-it-works">How it works</a><a href="#safety">Safety</a><Link href="/sign-in">Sign in</Link><Link className="nav-cta" href="/sign-in">Enter Ecolef</Link></nav>
     </header>
 
-    <section className="landing-hero"><div className="heartbeat-orb" aria-hidden="true"><div className="background-heart" /></div>
+    <section className="landing-hero">
       <div className="hero-copy"><p className="eyebrow">PRIVATE EEG & WELLBEING WORKSPACE</p><h1>Understand the signal.<br /><em>Keep care human.</em></h1><p className="hero-lede">Ecolef brings EEG review, wellbeing context, and careful research tools into one quiet workspace for individuals, researchers, and clinicians.</p><div className="hero-actions"><Link className="primary-button" href="/sign-in">Enter Ecolef <span>↗</span></Link><a className="text-link" href="#how-it-works">How Ecolef works <span>↓</span></a></div><div className="trust-row"><span><i className="status-dot" />Private by account</span><span>Research support, not diagnosis.</span></div></div>
       <div className="signal-hero" aria-label="Abstract EEG signal visualization"><div className="signal-label">LIVE SIGNAL / RESEARCH VIEW</div><svg viewBox="0 0 520 270" role="img" aria-label="Minimal waveform"><path className="signal-path" pathLength="1" d="M0 152 H70 L88 151 L101 146 L111 157 L122 149 L135 151 L146 150 L156 82 L168 218 L182 151 H228 L244 150 L258 152 L272 122 L286 179 L300 149 H350 L363 150 L376 95 L390 205 L405 150 H462 L476 148 L490 151 H520" /></svg><div className="signal-footer"><span>Signal review</span><span>Live research view</span></div></div>
     </section>
