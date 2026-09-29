@@ -20,7 +20,7 @@ export default function Home() {
   const [file, setFile] = useState<File | null>(null)
   const [analyzing, setAnalyzing] = useState(false)
   const [message, setMessage] = useState('')
-  const [activeView, setActiveView] = useState<'overview' | 'history' | 'safety'>('overview')
+  const [activeView, setActiveView] = useState<'overview' | 'history' | 'safety' | 'admin'>('overview')
 
   async function analyze() {
     if (!file) return setMessage('Choose an EEG file first.')
@@ -44,7 +44,7 @@ export default function Home() {
     <main className="app-shell">
       <header className="topbar">
         <Link className="brand" href="/"><span className="brand-mark">E</span><span>Ecolef</span></Link>
-        <nav aria-label="Primary navigation"><a href="#analysis">Analysis</a><button onClick={() => setActiveView('history')}>History</button><a href="#about">About</a></nav>
+        <nav aria-label="Primary navigation"><a href="#analysis">Analysis</a><button onClick={() => setActiveView('history')}>History</button><a href="#about">About</a><button onClick={() => setActiveView('admin')}>Admin demo</button></nav>
         <div className="top-actions"><Link href="/sign-in" className="text-button">Sign in</Link><button className="outline-button" onClick={emergency}>Find help nearby</button></div>
       </header>
 
@@ -56,7 +56,7 @@ export default function Home() {
       <div className="workspace-tabs" role="tablist" aria-label="Workspace sections">
         <button className={activeView === 'overview' ? 'active' : ''} onClick={() => setActiveView('overview')}>Overview</button>
         <button className={activeView === 'history' ? 'active' : ''} onClick={() => setActiveView('history')}>History</button>
-        <button className={activeView === 'safety' ? 'active' : ''} onClick={() => setActiveView('safety')}>Safety centre</button>
+        <button className={activeView === 'safety' ? 'active' : ''} onClick={() => setActiveView('safety')}>Safety centre</button><button className={activeView === 'admin' ? 'active' : ''} onClick={() => setActiveView('admin')}>Admin demo</button>
       </div>
 
       {activeView === 'overview' && <>
@@ -68,6 +68,8 @@ export default function Home() {
       {activeView === 'history' && <section className="workspace view-panel"><p className="eyebrow">REPORT HISTORY</p><h2>Your private timeline</h2><p className="muted">Sign in to see reports scoped to your account. AI summaries will be clearly marked as generated support, with the original report always available.</p><Link className="primary-link" href="/sign-in">Open secure history</Link></section>}
 
       {activeView === 'safety' && <section className="workspace view-panel"><p className="eyebrow">SAFETY CENTRE</p><h2>Help is always a human decision.</h2><p className="muted">If you may be in immediate danger, contact local emergency services now. Ecolef can help you find nearby hospitals and prepare trusted contacts, but it cannot monitor emergencies.</p><div className="safety-actions"><button className="primary-button" onClick={emergency}>Find nearby hospital</button><Link className="outline-button" href="/sign-in">Manage trusted contacts</Link></div></section>}
+
+      {activeView === 'admin' && <section className="workspace view-panel"><p className="eyebrow">PUBLIC-SAFE ADMIN PREVIEW</p><h2>Manage access, never passwords.</h2><p className="muted">This portfolio preview shows the control model without exposing real users or credentials. In production, Better Auth stores password hashes that even the master cannot read.</p><div className="admin-grid"><div className="admin-stat"><span>Active accounts</span><strong>128</strong><small>Demo data only</small></div><div className="admin-stat"><span>Reports this month</span><strong>346</strong><small>Aggregated view</small></div><div className="admin-stat"><span>Audit events</span><strong>1,904</strong><small>Access reviewed</small></div></div><div className="admin-table"><div><b>Account</b><b>Role</b><b>Status</b><b>Action</b></div><div><span>demo.researcher@ecolef.test</span><span>Researcher</span><span className="admin-safe">Active</span><button className="text-button">Review access</button></div><div><span>demo.clinician@ecolef.test</span><span>Clinician</span><span className="admin-safe">Active</span><button className="text-button">Review access</button></div></div><p className="admin-footnote">Admin actions are audited. Passwords are never displayed, exported, or recoverable.</p></section>}
 
       <footer><span>© 2026 Ecolef</span><span>Encrypted account workspace · Research support, not diagnosis.</span><button onClick={emergency}>Emergency support</button></footer>
     </main>
