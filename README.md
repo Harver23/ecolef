@@ -97,7 +97,7 @@ Never commit secrets, database URLs, real EEG recordings, or private user data.
 pnpm dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000).
+Open (https://eeg-depression-analysis-stack.vercel.app/).
 
 ### Production build
 
