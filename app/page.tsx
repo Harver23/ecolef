@@ -1,93 +1,33 @@
 'use client'
 
 import { useState } from 'react'
+import Link from 'next/link'
 
-const bands = [
-  { label: 'Delta', value: '18.4 µV²', width: '58%' },
-  { label: 'Theta', value: '12.1 µV²', width: '42%' },
-  { label: 'Alpha', value: '9.8 µV²', width: '34%' },
-  { label: 'Beta', value: '6.2 µV²', width: '23%' },
-]
+const bands = [['Delta', '0.8–4 Hz', 'Stable'], ['Theta', '4–8 Hz', 'Review'], ['Alpha', '8–13 Hz', 'Stable'], ['Beta', '13–30 Hz', 'Stable']]
 
-export default function Page() {
-  const [fileName, setFileName] = useState('')
+export default function Home() {
+  const [file, setFile] = useState<File | null>(null)
+  const [analyzing, setAnalyzing] = useState(false)
+  const [message, setMessage] = useState('')
 
-  return (
-    <main className="app-shell">
-      <header className="topbar">
-        <a className="brand" href="#top" aria-label="NeuroMark home">
-          <span className="brand-mark" aria-hidden="true">N</span>
-          <span>NeuroMark</span>
-        </a>
-        <nav className="topnav" aria-label="Main navigation">
-          <a href="#analysis">Analysis</a>
-          <a href="#history">History</a>
-          <a href="#about">About</a>
-        </nav>
-        <button className="profile-button" type="button" aria-label="Open profile">DR</button>
-      </header>
+  async function analyze() {
+    if (!file) return setMessage('Choose an EEG file first.')
+    setAnalyzing(true); setMessage('Preparing a private report…')
+    await new Promise((resolve) => setTimeout(resolve, 900))
+    setAnalyzing(false); setMessage('Analysis queued. Your report will appear in History when ready.')
+  }
 
-      <div className="content-wrap" id="top">
-        <section className="intro" id="analysis">
-          <div>
-            <p className="eyebrow">EEG ANALYSIS</p>
-            <h1>Understand the signal.</h1>
-            <p className="intro-copy">Upload an EEG recording to review signal quality and depression-related patterns.</p>
-          </div>
-          <div className="privacy-note"><span className="status-dot" /> Private workspace</div>
-        </section>
+  function emergency() {
+    if (!navigator.geolocation) return window.open('https://www.google.com/maps/search/nearest+hospital', '_blank')
+    navigator.geolocation.getCurrentPosition(({ coords }) => window.open(`https://www.google.com/maps/search/hospital/@${coords.latitude},${coords.longitude},14z`, '_blank'), () => window.open('https://www.google.com/maps/search/nearest+hospital', '_blank'))
+  }
 
-        <section className="workspace-grid" aria-label="EEG analysis workspace">
-          <div className="panel upload-panel">
-            <div className="panel-heading">
-              <div>
-                <p className="section-label">01 / RECORDING</p>
-                <h2>Upload EEG file</h2>
-              </div>
-              <span className="file-type">EDF · BDF</span>
-            </div>
-            <label className="dropzone">
-              <input type="file" accept=".edf,.bdf" onChange={(event) => setFileName(event.target.files?.[0]?.name ?? '')} />
-              <span className="upload-icon" aria-hidden="true">↑</span>
-              <strong>{fileName || 'Choose a recording'}</strong>
-              <span>{fileName ? 'Ready for analysis' : 'or drag and drop it here'}</span>
-            </label>
-            <div className="upload-meta"><span>Max file size 500 MB</span><span>Data stays private</span></div>
-            <button className="primary-button" type="button">Start analysis <span aria-hidden="true">→</span></button>
-          </div>
-
-          <div className="panel overview-panel">
-            <div className="panel-heading">
-              <div>
-                <p className="section-label">02 / OVERVIEW</p>
-                <h2>Latest analysis</h2>
-              </div>
-              <span className="quiet-label">Sample result</span>
-            </div>
-            <div className="result-state"><span className="result-dot" /><span>Analysis complete</span><time>Today, 13:42</time></div>
-            <div className="score-row"><div><span className="metric-label">Pattern score</span><strong>0.68</strong></div><span className="score-caption">Moderate indication</span></div>
-            <div className="meter"><span /></div>
-            <p className="disclaimer">This score is a research signal, not a medical diagnosis.</p>
-            <a className="text-link" href="#details">View detailed report <span aria-hidden="true">→</span></a>
-          </div>
-        </section>
-
-        <section className="lower-grid" id="history">
-          <div className="panel signal-panel">
-            <div className="panel-heading"><div><p className="section-label">SIGNAL PROFILE</p><h2>Frequency bands</h2></div><span className="quiet-label">Relative power</span></div>
-            <div className="band-list">{bands.map((band) => <div className="band-row" key={band.label}><span>{band.label}</span><div className="band-track"><span style={{ width: band.width }} /></div><strong>{band.value}</strong></div>)}</div>
-          </div>
-          <aside className="panel history-panel">
-            <p className="section-label">RECENT FILES</p>
-            <h2>Analysis history</h2>
-            <div className="history-item"><span className="file-icon">EDF</span><div><strong>session_04.edf</strong><small>Today · Complete</small></div><span className="history-score">0.68</span></div>
-            <div className="history-item"><span className="file-icon">EDF</span><div><strong>baseline.edf</strong><small>Sep 24 · Complete</small></div><span className="history-score">0.41</span></div>
-            <a className="text-link" href="#all-history">See all history <span aria-hidden="true">→</span></a>
-          </aside>
-        </section>
-
-        <footer id="about"><span>NeuroMark · Research workspace</span><span>For research use only</span></footer>
-      </div>
-    </main>
-  )
+  return <main className="app-shell">
+    <header className="topbar"><Link className="brand" href="/"><span className="brand-mark">E</span><span>Ecolef</span></Link><nav><a href="#analysis">Analysis</a><a href="#history">History</a><a href="#about">About</a></nav><div className="top-actions"><Link href="/sign-in" className="text-button">Sign in</Link><button className="outline-button" onClick={emergency}>Find help nearby</button></div></header>
+    <section className="hero"><div><p className="eyebrow">PRIVATE EEG RESEARCH WORKSPACE</p><h1>Understand the signal.<br /><em>Keep care human.</em></h1><p className="hero-copy">Ecolef helps you organise EEG recordings and review research signals with calm, clear context. It is not a diagnosis.</p></div><aside className="safety-note"><span className="status-dot" /> Your data stays private<br /><small>Reports are separated by account.</small></aside></section>
+    <section className="workspace" id="analysis"><div className="section-heading"><div><p className="eyebrow">01 / NEW ANALYSIS</p><h2>Upload a recording</h2></div><span className="format-note">EDF or BDF · max 200 MB</span></div><label className="upload-box"><input type="file" accept=".edf,.bdf" onChange={(e) => setFile(e.target.files?.[0] ?? null)} /><strong>{file ? file.name : 'Choose an EEG recording'}</strong><span>{file ? 'Ready for private analysis' : 'or drop your EDF / BDF file here'}</span></label><div className="action-row"><button className="primary-button" onClick={analyze} disabled={analyzing}>{analyzing ? 'Preparing…' : 'Start analysis'}</button><button className="emergency-button" onClick={emergency}>I need urgent help</button></div>{message && <p className="inline-message" role="status">{message}</p>}</section>
+    <section className="overview"><div className="section-heading"><div><p className="eyebrow">02 / SIGNAL OVERVIEW</p><h2>Latest report</h2></div><span className="report-date">No report selected</span></div><div className="overview-grid"><div className="score-panel"><span className="muted">Research signal index</span><strong>—</strong><p>Upload a recording to generate a report. Results are supportive context, not medical advice.</p></div><div className="bands">{bands.map(([name, hz, state]) => <div className="band-row" key={name}><span><b>{name}</b><small>{hz}</small></span><i className={state === 'Review' ? 'review' : ''}>{state}</i></div>)}</div></div></section>
+    <section className="lower-grid" id="history"><div className="history-panel"><p className="eyebrow">03 / HISTORY</p><h2>Your reports</h2><p className="muted">Sign in to keep analysis history private to you.</p><Link className="inline-link" href="/sign-in">View secure history →</Link></div><div className="about-panel" id="about"><p className="eyebrow">ABOUT ECOLEF</p><h2>Clear tools for careful review.</h2><p className="muted">Ecolef can use AI to summarise report language, but it never replaces a clinician or emergency service.</p></div></section>
+    <footer><span>© 2026 Ecolef</span><span>Research support, not diagnosis.</span><button onClick={emergency}>Emergency support</button></footer>
+  </main>
 }

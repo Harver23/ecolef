@@ -3,7 +3,7 @@ import type { Metadata, Viewport } from 'next'
 import './globals.css'
 
 export const metadata: Metadata = {
-  title: 'NeuroMark | EEG Research Workspace',
+  title: 'Ecolef | EEG Research Workspace',
   description: 'A simple private workspace for reviewing EEG recordings and research signals.',
   generator: 'v0.app',
   icons: {
