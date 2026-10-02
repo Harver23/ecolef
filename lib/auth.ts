@@ -17,7 +17,10 @@ export const auth = betterAuth({
   emailAndPassword: { enabled: true },
   baseURL: process.env.BETTER_AUTH_URL || origin(process.env.VERCEL_PROJECT_PRODUCTION_URL) || origin(process.env.VERCEL_URL) || process.env.V0_RUNTIME_URL,
   trustedOrigins,
-  ...(process.env.NODE_ENV === 'development'
-    ? { advanced: { defaultCookieAttributes: { sameSite: 'none' as const, secure: true } } }
-    : {}),
+  advanced: {
+    defaultCookieAttributes: {
+      sameSite: 'none' as const,
+      secure: true,
+    },
+  },
 })
