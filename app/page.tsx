@@ -2,6 +2,7 @@
 
 import Link from 'next/link'
 import { useState } from 'react'
+import { authClient } from '@/lib/auth-client'
 
 const slides = [
   { number: '01', label: 'What is Ecolef?', title: 'A quieter way to review the signal.', copy: 'Ecolef is a private workspace for organizing EEG-related information, analysis results, and wellbeing research in one place.', kind: 'signal' },
@@ -12,12 +13,13 @@ const slides = [
 
 export default function Home() {
   const [slide, setSlide] = useState(0)
+  const { data: session } = authClient.useSession()
   const current = slides[slide]
 
   return <main>
     <header className="public-nav">
       <Link className="brand" href="/"><span className="brand-mark">E</span><span>Ecolef</span></Link>
-      <nav><a href="#how-it-works">How it works</a><a href="#safety">Safety</a><Link href="/sign-in">Sign in</Link><Link className="nav-cta" href="/sign-in">Enter Ecolef</Link></nav>
+      <nav><a href="#how-it-works">How it works</a><a href="#safety">Safety</a>{session?.user ? <><Link href="/vitals">Vitals</Link><span className="account-label">{session.user.name || session.user.email}</span><Link className="nav-cta" href="/vitals">Open workspace</Link></> : <><Link href="/sign-in">Sign in</Link><Link className="nav-cta" href="/sign-in">Enter Ecolef</Link></>}</nav>
     </header>
 
     <section className="landing-hero">

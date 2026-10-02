@@ -19,7 +19,7 @@ export function AuthForm({ mode }: { mode: 'sign-in' | 'sign-up' }) {
       : await authClient.signIn.email({ email, password })
     setBusy(false)
     if (result.error) { setError('We could not complete that request. Check your details and try again.'); return }
-    router.push('/'); router.refresh()
+    router.push('/vitals'); router.refresh()
   }
 
   return <form className="auth-form" onSubmit={submit}>
